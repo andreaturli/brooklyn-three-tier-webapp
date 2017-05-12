@@ -21,9 +21,9 @@ services:
 before_install:
 
   # Manually install and run brooklyn as it isn't an available service
-  - curl -SL http://mirror.nohup.it/apache/brooklyn/apache-brooklyn_0.10.0_noarch.deb | sudo dpkg -i apache-brooklyn_0.10.0_noarch.deb
-  - nohup bash -c "sudo service brooklyn start >/dev/null 2>&1 &"
-
+  - curl -SL https://repository.apache.org/content/repositories/releases/org/apache/brooklyn/brooklyn-dist/0.10.0/brooklyn-dist-0.10.0-dist.tar.gz | tar xzf
+  - nohup bash -c "cd brooklyn-dist-* && bin/brooklyn launch >/dev/null 2>&1 &"
+  
 install:
   # Override default travis to use the maven wrapper
   # skip license on travis due to #1512
