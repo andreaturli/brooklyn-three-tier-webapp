@@ -1,6 +1,10 @@
 name: ThreeTierApp
 
-location: localhost
+location: 
+  docker:
+    endpoint: http://localhost:2375
+    identity: test
+    credential: test
 
 services:
   - type: ThreeTierApp
