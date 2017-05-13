@@ -19,11 +19,7 @@ services:
   - docker
 
 before_install:
-  - ps aux
-  - ip a
-  - ip r ls
-  - hostname -I
-  - sudo cat /etc/default/docker
+  - ls ~/.docker/certs
   - chmod 600 brooklyn.properties
   - ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -q
   - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
