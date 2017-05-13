@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apache.brooklyn</groupId>
+    <artifactId>brooklyn-library</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-all</artifactId>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>integration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.brooklyn.maven</groupId>
+                        <artifactId>brooklyn-maven-plugin</artifactId>
+                        <version>0.3.0-SNAPSHOT</version>
+                        <executions>
+                            <execution>
+                                <id>Run and deploy SeaClouds</id>
+                                <goals>
+                                    <goal>start-server</goal>
+                                    <goal>deploy</goal>
+                                    <goal>sensor</goal>
+                                    <goal>stop</goal>
+                                </goals>
+                                <configuration>
+                                    <bindPort>${bindPort}</bindPort>
+                                    <pollPeriod>${brookyn.pollPeriod}</pollPeriod>
+                                    <timeout>30</timeout><!--minutes-->
+                                    <bindAddress>localhost</bindAddress>
+                                    <arguments>
+                                        <argument>--catalogInitial</argument>
+                                        <argument>${project.basedir}/catalog.bom</argument>
+                                        <argument>--localBrooklynProperties</argument>
+                                        <argument>${project.basedir}/brooklyn.properties</argument>
+                                    </arguments>
+                                    <blueprint>${project.basedir}/brooklyn-three-tier-webapp.yaml</blueprint>
+                                    <sensor>service.isUp</sensor>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>Stop SeaClouds</id>
+                                <goals>
+                                    <goal>stop-server</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <echo>Maven plugin example results:</echo>
+                                        <echo>Server was running at ${brookyn.server}</echo>
+                                        <echo>Application: ${brooklyn.app}</echo>
+                                        <echo>Sensor value: ${brooklyn.sensor}</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+</project>
