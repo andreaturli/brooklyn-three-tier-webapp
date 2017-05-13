@@ -1,10 +1,12 @@
 name: ThreeTierApp
 
-location: 
+location:
   docker:
     endpoint: http://localhost:2375
-    identity: test
-    credential: test
+    identity: /Users/andrea/.docker/machine/certs/cert.pem
+    credential: /Users/andrea/.docker/machine/certs/key.pem
+    imageId: "cloudsoft/centos:7"
+    loginUser.password: p4ssw0rd
 
 services:
-  - type: ThreeTierApp
+  - type: server
