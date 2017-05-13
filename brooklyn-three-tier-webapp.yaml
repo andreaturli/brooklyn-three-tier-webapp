@@ -1,6 +1,0 @@
-name: ThreeTierApp
-
-location: localhost
-
-services:
-  - type: ThreeTierApp
