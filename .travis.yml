@@ -19,6 +19,7 @@ services:
   - docker
 
 before_install:
+  - ps aux
   - ip a
   - ip r ls
   - hostname -I
