@@ -14,70 +14,50 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>integration</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.brooklyn.maven</groupId>
-                        <artifactId>brooklyn-maven-plugin</artifactId>
-                        <version>0.3.0</version>
-                        <executions>
-                            <execution>
-                                <id>Run and deploy app</id>
-                                <goals>
-                                    <goal>start-server</goal>
-                                    <goal>deploy</goal>
-                                    <goal>sensor</goal>
-                                    <goal>stop</goal>
-                                </goals>
-                                <configuration>
-                                    <bindPort>${bindPort}</bindPort>
-                                    <pollPeriod>${brookyn.pollPeriod}</pollPeriod>
-                                    <timeout>30</timeout><!--minutes-->
-                                    <bindAddress>localhost</bindAddress>
-                                    <arguments>
-                                        <argument>--catalogInitial</argument>
-                                        <argument>${project.basedir}/catalog.bom</argument>
-                                        <argument>--localBrooklynProperties</argument>
-                                        <argument>${project.basedir}/brooklyn.properties</argument>
-                                    </arguments>
-                                    <blueprint>${project.basedir}/brooklyn-three-tier-webapp.yaml</blueprint>
-                                    <sensor>service.isUp</sensor>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>Stop app</id>
-                                <goals>
-                                    <goal>stop-server</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <tasks>
-                                        <echo>Maven plugin example results:</echo>
-                                        <echo>Server was running at ${brookyn.server}</echo>
-                                        <echo>Application: ${brooklyn.app}</echo>
-                                        <echo>Sensor value: ${brooklyn.sensor}</echo>
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.brooklyn.maven</groupId>
+                <artifactId>brooklyn-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>Run Brooklyn</id>
+                        <goals>
+                            <goal>start-server</goal>
+                            <goal>deploy</goal>
+                            <goal>sensor</goal>
+                            <goal>stop</goal>
+                            <goal>stop-server</goal>
+                        </goals>
+                        <configuration>
+                            <bindPort>${bindPort}</bindPort>
+                            <blueprint>${project.basedir}/blueprint.yaml</blueprint>
+                            <sensor>webapp.url</sensor>
+                            <typeRegex>.*Tomcat.*</typeRegex>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo>Maven plugin example results:</echo>
+                                <echo>Server:       ${brooklyn.server}</echo>
+                                <echo>Application:  ${brooklyn.app}</echo>
+                                <echo>Sensor value: ${brooklyn.sensor}</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
