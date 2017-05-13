@@ -19,7 +19,6 @@ services:
   - docker
 
 before_install:
-  - ls ~/.docker/certs
   - chmod 600 brooklyn.properties
   - ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -q
   - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
