@@ -19,7 +19,13 @@ services:
   - docker
 
 before_install:
-
+  - chmod 600 brooklyn.properties
+  - ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -q
+  - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+  - echo "Host localhost" >> /home/travis/.ssh/config
+  - echo "    StrictHostKeyChecking no" >> /home/travis/.ssh/config
+  - ssh-keyscan -t rsa localhost >> ~/.ssh/known_hosts
+  - chmod g-rw,o-rw /home/travis/.ssh/*
   # Manually install and run brooklyn as it isn't an available service
   - curl -SL https://repository.apache.org/content/repositories/releases/org/apache/brooklyn/brooklyn-dist/0.10.0/brooklyn-dist-0.10.0-dist.tar.gz | tar xz
   - nohup bash -c "cd brooklyn-dist-* && bin/brooklyn launch >/dev/null 2>&1 &"
@@ -27,7 +33,8 @@ before_install:
 install:
   # Override default travis to use the maven wrapper
   # skip license on travis due to #1512
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Dlicense.skip=true
+  #- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Dlicense.skip=true
+  - mvn verify -Pintegration
 
 script:
 #  - ./travis/publish.sh
