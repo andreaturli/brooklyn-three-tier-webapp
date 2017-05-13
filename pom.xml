@@ -10,6 +10,7 @@
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
             <artifactId>brooklyn-all</artifactId>
+            <version>0.10.0</version>
         </dependency>
     </dependencies>
 
