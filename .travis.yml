@@ -35,7 +35,7 @@ install:
   # Override default travis to use the maven wrapper
   # skip license on travis due to #1512
   #- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Dlicense.skip=true
-  - mvn verify
+  - mvn clean verify
 
 script:
 #  - ./travis/publish.sh
