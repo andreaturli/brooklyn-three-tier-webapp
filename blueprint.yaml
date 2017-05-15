@@ -3,10 +3,12 @@ name: ThreeTierApp
 location:
   docker:
     endpoint: http://localhost:2375
-    identity: /home/travis/cert.pem
-    credential: /home/travis/key.pem
+    identity: /Users/andrea/.docker/machine/certs/cert.pem
+    credential: /Users/andrea/.docker/machine/certs/key.pem
     imageId: "cloudsoft/centos:7"
     loginUser.password: p4ssw0rd
 
 services:
-  - type: server
+- type: org.apache.brooklyn.entity.software.base.EmptySoftwareProcess
+- type: org.apache.brooklyn.entity.webapp.tomcat.TomcatServer
+
